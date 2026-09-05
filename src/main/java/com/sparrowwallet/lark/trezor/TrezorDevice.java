@@ -400,6 +400,15 @@ public class TrezorDevice implements Closeable, ProtocolCallbacks {
      * firmware that does support it.
      */
     public boolean supportsUnifiedSigHash() {
+        return supportsUnifiedSigHash(features);
+    }
+
+    /**
+     * The capability read itself, taking the features rather than reading the field, so it can be exercised without a
+     * device or a handshake. The rule is subtle in two ways that a test can pin and a review cannot: the number is 29
+     * rather than 28, and an unrecognised value has to be read out of the unknown fields as well as the parsed list.
+     */
+    static boolean supportsUnifiedSigHash(TrezorMessageManagement.Features features) {
         if(features == null) {
             return false;
         }
